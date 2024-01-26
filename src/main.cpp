@@ -44,7 +44,6 @@ void pre_auton(void) {
 
   catapultA.setStopping(brakeType::hold);
   catapultB.setStopping(brakeType::hold);
-  catapultC.setStopping(brakeType::hold);
 
   intake.setStopping(brakeType::brake);
 

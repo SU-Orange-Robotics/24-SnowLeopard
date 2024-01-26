@@ -18,7 +18,6 @@ extern motor intake;
 
 extern motor catapultA;
 extern motor catapultB;
-extern motor catapultC;
 
 extern rotation catapultRot;
 

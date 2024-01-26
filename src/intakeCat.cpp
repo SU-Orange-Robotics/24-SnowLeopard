@@ -17,13 +17,11 @@ void intakeStop() {
 void catapultLower() {
     catapultA.spin(directionType::fwd, catPow, percentUnits::pct);
     catapultB.spin(directionType::fwd, catPow, percentUnits::pct);
-    catapultC.spin(directionType::fwd, catPow, percentUnits::pct);
 }
 
 void catapultStop() {
     catapultA.stop();
     catapultB.stop();
-    catapultC.stop();
 }
 
 void catapultArm() {
@@ -51,7 +49,6 @@ void catapultLaunch2() {
     double helpPow = 100;
     catapultA.spin(directionType::rev, helpPow, percentUnits::pct);
     catapultB.spin(directionType::rev, helpPow, percentUnits::pct);
-    catapultC.spin(directionType::rev, helpPow, percentUnits::pct);
 
     wait(200, timeUnits::msec);
     waitUntil(catShooted());
