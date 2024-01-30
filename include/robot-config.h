@@ -18,11 +18,15 @@ extern motor intake;
 
 extern motor catapultA;
 extern motor catapultB;
-
 extern rotation catapultRot;
 
-extern controller Controller1;
 extern inertial IMU;
 extern gps gps1;
+extern rotation odomLeft;
+extern rotation odomRight;
+extern rotation odomCenter;
+
+extern brain Brain;
+extern controller Controller1;
 
 extern Drive drive;
