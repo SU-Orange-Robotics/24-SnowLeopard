@@ -1,6 +1,8 @@
 #include "vex.h"
 #include "drive.h"
 #include "robot-config.h"
+#include "odometry.h"
+#include "utils/util.h"
 
 using namespace vex;
 

@@ -13,16 +13,16 @@ void intakeStop();
 
 void catapultLower();
 
+void catapultRaise();
+
 void catapultArm();
 
 void catapultLaunch();
-
-void catapultLaunch2();
 
 void catapultStop();
 
 bool catInPosArmed();
 
-bool catInPosShoot();
+void updateCatAccel(double time);
 
-bool catShooted();
+double getCatAccel();

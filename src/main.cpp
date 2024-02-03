@@ -181,7 +181,8 @@ void usercontrol(void) {
     // catapult
     Controller1.ButtonR1.pressed([](){
       catapultLaunch();
-      wait(500, msec);
+      // these two lines here are what does the automatic arming of the catapult.
+      waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
       catapultArm();
     });
 
@@ -204,6 +205,15 @@ void usercontrol(void) {
     });
 
     Controller1.ButtonDown.released([](){
+      stopAutoArming();
+      catapultStop();
+    });
+
+    Controller1.ButtonUp.pressed([](){
+      catapultRaise();
+    });
+
+    Controller1.ButtonUp.released([](){
       stopAutoArming();
       catapultStop();
     });
@@ -241,6 +251,8 @@ int main() {
     Controller1.Screen.setCursor(2,12);
     //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
     Controller1.Screen.print(catapultRot.angle());
+
+    updateCatAccel(0.02);
 
     wait(20, msec);
   }
