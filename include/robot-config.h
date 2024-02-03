@@ -26,6 +26,8 @@ extern rotation odomLeft;
 extern rotation odomRight;
 extern rotation odomCenter;
 
+extern optical colorSensor;
+
 extern brain Brain;
 extern controller Controller1;
 
