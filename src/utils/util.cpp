@@ -1,6 +1,6 @@
 #include "vex.h"
 #include <math.h>
-#include "util.h"
+#include "utils/util.h"
 
 double toRadians(double deg) {
     return (deg * M_PI / 180);
