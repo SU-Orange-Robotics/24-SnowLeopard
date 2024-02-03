@@ -18,6 +18,9 @@ motor RightMotorB(PORT12, gearSetting::ratio18_1, false);
 
 motor intake(PORT20, gearSetting::ratio18_1, false);
 
+motor wingL(PORT9, gearSetting::ratio18_1, false);
+motor wingR(PORT8, gearSetting::ratio18_1, true);
+
 motor catapultA(PORT19, gearSetting::ratio18_1, true); //left
 motor catapultB(PORT11, gearSetting::ratio18_1, false); //right
 
@@ -39,3 +42,4 @@ controller Controller1(controllerType::primary);
 
 // declare object-oriented stuff here (that should be globally accessible)
 Drive drive;
+Wings wings;

@@ -11,6 +11,7 @@
 #include "drive.h"
 #include "robot-config.h"
 #include "intakeCat.h"
+#include "wings.h"
 
 using namespace vex;
 
@@ -29,6 +30,8 @@ void pre_auton(void) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 
+  wings.initWings();
+
   LeftMotorA.setStopping(brakeType::brake);
   LeftMotorB.setStopping(brakeType::brake);
   RightMotorA.setStopping(brakeType::brake);
@@ -46,7 +49,6 @@ void pre_auton(void) {
   catapultB.setStopping(brakeType::hold);
 
   intake.setStopping(brakeType::brake);
-
 }
 
 /*---------------------------------------------------------------------------*/
@@ -177,6 +179,9 @@ void usercontrol(void) {
       intakeStop();
     });
 
+    Controller1.ButtonA.pressed([](){
+      wings.toggleWings();
+    });
 
     // catapult
     Controller1.ButtonR1.pressed([](){
