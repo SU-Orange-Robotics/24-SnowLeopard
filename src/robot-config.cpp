@@ -24,10 +24,14 @@ motor catapultB(PORT11, gearSetting::ratio18_1, true); //right
 
 rotation catapultRot(PORT8, false);
 
+rotation odomLeft(PORT10, true);
+rotation odomRight(PORT2, false);
+rotation odomCenter(PORT3, true);
+
+optical colorSensor(PORT14);
 
 brain Brain;
 controller Controller1(controllerType::primary);
-
 
 inertial IMU(PORT5);
 gps gps1(PORT19, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, angle offset, turn direction?
