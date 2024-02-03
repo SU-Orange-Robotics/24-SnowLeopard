@@ -21,22 +21,24 @@ motor intake(PORT20, gearSetting::ratio18_1, false);
 motor wingL(PORT9, gearSetting::ratio18_1, false);
 motor wingR(PORT8, gearSetting::ratio18_1, true);
 
-motor catapultA(PORT19, gearSetting::ratio18_1, false); //left
-motor catapultB(PORT11, gearSetting::ratio18_1, true); //right
+motor catapultA(PORT19, gearSetting::ratio18_1, true); //left
+motor catapultB(PORT11, gearSetting::ratio18_1, false); //right
 
-rotation catapultRot(PORT8, false);
+rotation catapultRot(PORT5, false);
 
+inertial IMU(PORT15);
+gps gps1(PORT4, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, angle offset, turn direction?
 rotation odomLeft(PORT10, true);
 rotation odomRight(PORT2, false);
 rotation odomCenter(PORT3, true);
+
+motor wingLeft(PORT8, gearSetting::ratio18_1, false);
+motor wingRight(PORT9, gearSetting::ratio18_1, true);
 
 optical colorSensor(PORT14);
 
 brain Brain;
 controller Controller1(controllerType::primary);
-
-inertial IMU(PORT5);
-gps gps1(PORT19, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, angle offset, turn direction?
 
 // declare object-oriented stuff here (that should be globally accessible)
 Drive drive;
