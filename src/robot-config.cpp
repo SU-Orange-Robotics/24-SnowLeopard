@@ -37,8 +37,5 @@ optical colorSensor(PORT14);
 brain Brain;
 controller Controller1(controllerType::primary);
 
-inertial IMU(PORT15);
-gps gps1(PORT4, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, angle offset, turn direction?
-
 // declare object-oriented stuff here (that should be globally accessible)
 Drive drive;
