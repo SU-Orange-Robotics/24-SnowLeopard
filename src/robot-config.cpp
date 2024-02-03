@@ -18,8 +18,8 @@ motor RightMotorB(PORT12, gearSetting::ratio18_1, false);
 
 motor intake(PORT20, gearSetting::ratio18_1, false);
 
-motor catapultA(PORT19, gearSetting::ratio18_1, false); //left
-motor catapultB(PORT11, gearSetting::ratio18_1, true); //right
+motor catapultA(PORT19, gearSetting::ratio18_1, true); //left
+motor catapultB(PORT11, gearSetting::ratio18_1, false); //right
 //motor catapultC(PORT9, gearSetting::ratio36_1, true);
 
 rotation catapultRot(PORT8, false);
