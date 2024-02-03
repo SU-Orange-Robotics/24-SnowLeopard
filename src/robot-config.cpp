@@ -32,8 +32,8 @@ rotation odomLeft(PORT10, true);
 rotation odomRight(PORT2, false);
 rotation odomCenter(PORT3, true);
 
-motor wingLeft(PORT8, gearSetting::ratio18_1, false);
-motor wingRight(PORT9, gearSetting::ratio18_1, true);
+motor wingLeft(PORT8, gearSetting::ratio18_1, true);
+motor wingRight(PORT9, gearSetting::ratio18_1, false);
 
 optical colorSensor(PORT14);
 

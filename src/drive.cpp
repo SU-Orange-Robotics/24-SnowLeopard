@@ -8,7 +8,7 @@ using namespace vex;
 
 Drive::Drive() {    
     originCorr = 0;
-    originHeading = IMU.heading();
+    originHeading = gps1.heading();
     invertDrive = false;
     activePID = false;
 }
@@ -41,7 +41,7 @@ void Drive::tankDrive(double left, double right) {
     rightDrive(maxClamp(right, maxOutputPct));
 }
 
-void Drive::inputAdjust(double &fwd, double &str) {
+void Drive::inputAdjust(double &fwd, double &str) { // add parameter for tank drive
     fwd *= fabs(fwd) < deadzone ? 0.0 : 1.0;
     str *= fabs(str) < deadzone ? 0.0 : 1.0;
     
@@ -56,11 +56,18 @@ void Drive::inputAdjust(double &fwd, double &str) {
     fwd *= 100;
     str *= 100;
 
-    //if statement to invert control direction
+    //invert control direction
     if (invertDrive) {
         fwd *= -1;
-        str *= -1;
     }
+}
+
+void Drive::toggleInvertedDrive() {
+    invertDrive = !invertDrive;
+}
+
+bool Drive::getInvertedDrive() {
+    return invertDrive;
 }
 
 void Drive::resetHeading() {
@@ -80,7 +87,7 @@ void Drive::driveForward(double pow) {
 }
 
 void Drive::adjustCCW(double speed) {
-    leftDrive(speed);
+    leftDrive(-speed);
     rightDrive(speed);
     // wait(0.5, sec);
     // stop();
