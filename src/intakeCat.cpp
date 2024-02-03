@@ -19,6 +19,11 @@ void catapultLower() {
     catapultB.spin(directionType::fwd, catPow, percentUnits::pct);
 }
 
+void catapultRaise() {
+    catapultA.spin(directionType::fwd, catPow * -1, percentUnits::pct);
+    catapultB.spin(directionType::fwd, catPow * -1, percentUnits::pct);
+}
+
 void catapultStop() {
     catapultA.stop();
     catapultB.stop();
@@ -33,63 +38,43 @@ void catapultArm() {
 }
 
 void catapultLaunch() {
-    autoArming = true;
     catapultLower();
-    //waitUntil(catInPosShoot() || !autoArming);
-    catShooted(); //will block execution until it returns a value, which means the cat has finished shooting
+    waitUntil(catapultRot.velocity(velocityUnits::dps) > 2); // needs to be tuned
     catapultStop();
-}
-
-//this didn't work, too much resistance from the motors in coast mode
-void catapultLaunch2() {
-    //catapultA.setStopping(brakeType::coast);
-    //catapultB.setStopping(brakeType::coast);
-    //catapultC.setStopping(brakeType::coast);
-
-    double helpPow = 100;
-    catapultA.spin(directionType::rev, helpPow, percentUnits::pct);
-    catapultB.spin(directionType::rev, helpPow, percentUnits::pct);
-
-    wait(200, timeUnits::msec);
-    waitUntil(catShooted());
-
-    catapultStop();
-    //catapultA.setStopping(brakeType::hold);
-    //catapultB.setStopping(brakeType::hold);
-    //catapultC.setStopping(brakeType::hold);
 }
 
 bool catInPosArmed() {
-    double posA1 = 197, posA2 = 200;//197.57, 197.75
+    double setPos = 174; //197.57, 197.75
 
     double currPos = catapultRot.angle(rotationUnits::deg);
-    //modf(360, &currPos);
-
-    return ((currPos > posA1 && currPos < posA2) /*|| (currPos > posB1 && currPos < posB2)*/);
+    return (currPos <= setPos);
 }
 
-bool catInPosShoot() {
+/*bool catInPosShoot() {
     double posA1 = 248, posA2 = 255;
 
     double currPos = catapultRot.angle(rotationUnits::deg);
     //modf(360, &currPos);
 
     return (currPos > posA1 && currPos < posA2);
+}*/
+
+double velo;
+double lastVelo;
+double catAccel = 0;
+
+/** Updates the accelleration value for the catapult
+ * @param time
+ * the amount of time elapsed since last update in seconds
+ */
+void updateCatAccel(double time) {
+    velo = catapultRot.velocity(velocityUnits::dps);
+    catAccel = (velo - lastVelo) / time; // time in seconds
+    lastVelo = velo;
 }
 
-bool catShooted() {
-    double velo;
-    double lastVelo = catapultRot.velocity(velocityUnits::dps);
-    double accl = 100;
-
-    while (accl > 2) {
-        wait(20, timeUnits::msec);
-        velo = catapultRot.velocity(velocityUnits::dps);
-        accl = (velo - lastVelo) / 0.02;
-        lastVelo = velo;
-    }
-
-    return true;
+double getCatAccel() {
+    return catAccel;
 }
 
 void stopAutoArming() {

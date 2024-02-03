@@ -20,17 +20,16 @@ motor intake(PORT20, gearSetting::ratio18_1, false);
 
 motor catapultA(PORT19, gearSetting::ratio18_1, false); //left
 motor catapultB(PORT11, gearSetting::ratio18_1, true); //right
-//motor catapultC(PORT9, gearSetting::ratio36_1, true);
+rotation catapultRot(PORT5, false);
 
-rotation catapultRot(PORT8, false);
-
+inertial IMU(PORT15);
+gps gps1(PORT4, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, angle offset, turn direction?
+rotation odomLeft(PORT10, false);
+rotation odomRight(PORT2, false);
+rotation odomCenter(PORT3, false);
 
 brain Brain;
 controller Controller1(controllerType::primary);
-
-
-inertial IMU(PORT5);
-gps gps1(PORT19, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, angle offset, turn direction?
 
 // declare object-oriented stuff here (that should be globally accessible)
 Drive drive;

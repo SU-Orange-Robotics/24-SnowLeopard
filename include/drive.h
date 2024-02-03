@@ -14,14 +14,6 @@ class Drive {
         double originCorr;
         bool invertDrive;
 
-        static double toRadians(double deg) {
-            return (deg * M_PI / 180);
-        }
-
-        static double toDegrees(double rad) {
-            return (rad * 180 / M_PI);
-        }
-
         static double maxClamp(double input, double max) {
             return (fabs(input) <= max ? input : max * (input / fabs(input)));
         }
