@@ -18,9 +18,11 @@ motor RightMotorB(PORT12, gearSetting::ratio18_1, false);
 
 motor intake(PORT20, gearSetting::ratio18_1, false);
 
+motor wingL(PORT9, gearSetting::ratio18_1, false);
+motor wingR(PORT8, gearSetting::ratio18_1, true);
+
 motor catapultA(PORT19, gearSetting::ratio18_1, false); //left
 motor catapultB(PORT11, gearSetting::ratio18_1, true); //right
-//motor catapultC(PORT9, gearSetting::ratio36_1, true);
 
 rotation catapultRot(PORT8, false);
 
@@ -38,3 +40,4 @@ gps gps1(PORT19, 0, 0, distanceUnits::mm, 180); // port, x, y, distance units, a
 
 // declare object-oriented stuff here (that should be globally accessible)
 Drive drive;
+Wings wings;

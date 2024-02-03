@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "drive.h"
+#include "wings.h"
 
 using namespace vex;
 
@@ -15,6 +16,9 @@ extern motor RightMotorA;
 extern motor RightMotorB;
 
 extern motor intake;
+
+extern motor wingL;
+extern motor wingR;
 
 extern motor catapultA;
 extern motor catapultB;
@@ -32,3 +36,4 @@ extern brain Brain;
 extern controller Controller1;
 
 extern Drive drive;
+extern Wings wings;
