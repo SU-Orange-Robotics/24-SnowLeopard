@@ -27,7 +27,6 @@ double odom_yPos;
 double odom_theta;
 double xChange = 0;
 double yChange = 0;
-double tChange = 0;
 
 double encoderLeft = 0.0;
 double encoderRight = 0.0;
@@ -73,28 +72,42 @@ void odomUpdate() {
     yChange = dx * sin(newTheta) + dy * cos(newTheta);
     odom_yPos += yChange;
 
-    tChange = dt;
     odom_theta += dt;
-}
 
-//this is where we use the odometry to check if the gps' reported change in position is realistic
-void updatePos() {
-    //get gps values
-    double gpsdx = 0.0;
-    double gpsdy = 0.0;
-    double gpsdt = 0.0;   
+    //this is where we use the odometry to check if the gps' reported change in position is realistic
+
+    double gpsdx = gps1.xPosition(distanceUnits::in) - xPos;
+    double gpsdy = gps1.yPosition(distanceUnits::in) - yPos;
 
     // calculate vector magnitudes for gps and odom
-    double gpsMag = 0.0;
-    double odomMag = 0.0;
+    double gpsMag = hypot(gpsdx, gpsdy);
+    double odomMag = hypot(xChange, yChange);
 
     // calulate angle difference between vectors
     double vectAngle = acos((gpsdx * xChange + gpsdy * yChange) / (gpsMag * odomMag));
 
     // compare vector for odom and gps. if the angle difference is small then approve the gps' updated position (overwrite old position)
     // also make sure the magnitude of the change is similar before approving new position
+    if (vectAngle <= 0.1 && (gpsMag - odomMag <= 2)) { // radians, inches
+        xPos = gps1.xPosition(distanceUnits::in);
+        yPos = gps1.yPosition(distanceUnits::in);
+    }
+
+    //always update the angle
+    theta = toRadians(gps1.heading(rotationUnits::deg));
+
 
     // if the angle difference is big, leave the position as is (or change is based on odometry?)
+}
+
+double gpsHeadingRad() {
+    double radHeading = (-1 * gps1.heading() * M_PI / 180);
+    return radHeading += (radHeading < -1 * M_PI ? 2 * M_PI : 0);
+}
+
+double gpsAngleRad() {
+    double radAngle = (-1 * gps1.rotation() * M_PI / 180);
+    return radAngle += (radAngle < -1 * M_PI ? 2 * M_PI : 0);
 }
 
 double getX() {

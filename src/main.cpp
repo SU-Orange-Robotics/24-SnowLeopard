@@ -11,6 +11,7 @@
 #include "drive.h"
 #include "robot-config.h"
 #include "intakeCat.h"
+#include "odometry.h"
 
 using namespace vex;
 
@@ -156,9 +157,13 @@ void usercontrol(void) {
     // update your motors, etc.
     // ........................................................................
 
-    drive.tankDrive(Controller1.Axis3.position(), Controller1.Axis2.position());
+    //drive.tankDrive(Controller1.Axis3.position(), Controller1.Axis2.position());
 
+    // 1 stick arcade
     //drive.arcadeDrive(Controller1.Axis3.position(), Controller1.Axis4.position());
+
+    // 2 stick arcade
+    drive.arcadeDrive(Controller1.Axis3.position(), Controller1.Axis1.position());
 
     //intake
     Controller1.ButtonL1.pressed([](){
@@ -218,6 +223,11 @@ void usercontrol(void) {
       catapultStop();
     });
 
+    //the button formerly known as twitter
+    Controller1.ButtonX.pressed([](){
+      drive.toggleInvertedDrive();
+    });
+
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
@@ -239,20 +249,21 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
+    updateCatAccel(0.02);
+    odomUpdate();
+
     //Controller1.Screen.clearScreen();
     Controller1.Screen.setCursor(1,1);
-    Controller1.Screen.print(drive.gpsHeadingRad());
+    Controller1.Screen.print(gpsHeadingRad());
     Controller1.Screen.setCursor(1,10);
-    Controller1.Screen.print(drive.gpsAngleRad());
+    Controller1.Screen.print(gpsAngleRad());
     Controller1.Screen.setCursor(2,1);
-    Controller1.Screen.print(gps1.xPosition());
+    Controller1.Screen.print(getX());
     Controller1.Screen.setCursor(3,1);
-    Controller1.Screen.print(gps1.yPosition());
+    Controller1.Screen.print(getY());
     Controller1.Screen.setCursor(2,12);
     //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
     Controller1.Screen.print(catapultRot.angle());
-
-    updateCatAccel(0.02);
 
     wait(20, msec);
   }
