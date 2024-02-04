@@ -63,7 +63,7 @@ void odomUpdate() {
     double dx = circ1 * (diffRight + diffLeft) / 2;
     double dy = circ1 * (diffCenter - (diffRight - diffLeft) * (width / length));
     double dt = circ2 * (diffRight - diffLeft) / length;
-  
+
     // 4. use trig to calculate new location x,y,theta
     double newTheta = odom_theta + (dt / 2.0);
     
