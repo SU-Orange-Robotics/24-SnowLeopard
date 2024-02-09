@@ -12,6 +12,7 @@
 #include "robot-config.h"
 #include "intakeCat.h"
 #include "wings.h"
+#include "autonomous.h"
 
 using namespace vex;
 
@@ -26,9 +27,6 @@ using namespace vex;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-
-  IMU.resetHeading();
-
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 
@@ -62,26 +60,6 @@ void pre_auton(void) {
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-
-void freeThings() {
-  // lower cat
-  catapultLower();
-  wait(0.6, sec);
-  catapultStop();
-
-  // free intake
-  drive.driveForward(80);
-  wait(0.2, sec);
-  drive.stop();
-
-  drive.driveForward(-100);
-  wait(0.6, sec);
-  drive.stop();
-
-  drive.driveForward(80);
-  wait(0.2, sec);
-  drive.stop();
-}
 
 void driveForwardTimed(double pow, double time) {
   drive.driveForward(pow);
@@ -199,7 +177,6 @@ void intake_and_shoot() {
   }
 }
 void green_skills_auto() {
-  // freeThings();
   catapultLower();
   wait(0.6, sec);
   catapultStop();
@@ -228,10 +205,8 @@ void green_skills_auto() {
 
 void green_autonomous() {
   
-  // free things
-  freeThings();
+  greenReleaseIntake();
 
-  // 
 
   catapultLower();
   wait(0.6, sec);
