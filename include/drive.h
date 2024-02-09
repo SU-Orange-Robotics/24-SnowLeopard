@@ -56,10 +56,6 @@ class Drive {
 
         void stop();
 
-        double gpsHeadingRad();
-
-        double gpsAngleRad();
-
 
         // make this private at some point, it is only public for debugging purposes on the controller display
         double getAngleToPoint(double x2, double y2);

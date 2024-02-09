@@ -2,14 +2,18 @@
 
 #pragma once
 
-const double width = 0; // forward offset of the center wheel
-const double length = 0; // lateral disance between the wheels, more like "width" of the bot
-const double circ1 = 0;
-const double circ2 = 0; //this is for the center wheel
+const double width = 4.25;
+const double length = 11.75;
+const double circ1 = 4.1875 * M_PI;
+const double circ2 = 3.375 * M_PI; //this is for the center wheel
 
 void odomInit();
 
 void odomUpdate();
+
+double gpsHeadingRad();
+
+double gpsAngleRad();
 
 double getX();
 

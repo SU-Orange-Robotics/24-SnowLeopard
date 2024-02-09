@@ -25,7 +25,7 @@ void Drive::rightDrive(double pow) {
 
 void Drive::arcadeDrive(double y, double x) {
     inputAdjust(y, x);
-    x /= 2;
+    x *= 0.75;
     leftDrive(maxClamp(y + x, maxOutputPct));
     rightDrive(maxClamp(y - x, maxOutputPct));
 }
@@ -72,17 +72,6 @@ void Drive::stop() {
     LeftMotorB.stop();
     RightMotorA.stop();
     RightMotorB.stop();
-}
-
-//these two functions should be replaced by ones in the odometry file
-double Drive::gpsHeadingRad() {
-    double radHeading = (-1 * gps1.heading() * M_PI / 180);
-    return radHeading += (radHeading < -1 * M_PI ? 2 * M_PI : 0);
-}
-
-double Drive::gpsAngleRad() {
-    double radAngle = (-1 * gps1.rotation() * M_PI / 180);
-    return radAngle += (radAngle < -1 * M_PI ? 2 * M_PI : 0);
 }
 
 void Drive::driveForward(double pow) {
