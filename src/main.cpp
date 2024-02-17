@@ -348,6 +348,7 @@ void usercontrol(void) {
     Controller1.ButtonR1.pressed([](){
       catapultLaunch();
       // these two lines here are what does the automatic arming of the catapult.
+      wait(50, msec);
       waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
       catapultArm();
     });

@@ -43,12 +43,12 @@ void catapultArmToPosition(double pos) {
 
 void catapultLaunch() {
     catapultLower();
-    waitUntil(catapultRot.velocity(velocityUnits::dps) > 2); // needs to be tuned
+    waitUntil(catapultRot.velocity(velocityUnits::dps) > 2);
     catapultStop();
 }
 
 bool catInPosArmed() {
-    double setPos = 58; //197.57, 197.75
+    double setPos = 62; //197.57, 197.75
 
     double currPos = catapultRot.angle(rotationUnits::deg);
     return (currPos <= setPos);
