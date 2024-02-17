@@ -347,7 +347,7 @@ void usercontrol(void) {
     // catapult
     Controller1.ButtonR1.pressed([](){
       catapultLaunch();
-      // these two lines here are what does the automatic arming of the catapult.
+      // these three lines here are what does the automatic arming of the catapult.
       wait(50, msec);
       waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
       catapultArm();
@@ -422,7 +422,7 @@ int main() {
     Controller1.Screen.setCursor(1,1);
     Controller1.Screen.print(gpsHeadingRad());
     Controller1.Screen.setCursor(1,10);
-    Controller1.Screen.print(gpsAngleRad());
+    Controller1.Screen.print(Brain.Battery.capacity());
     Controller1.Screen.setCursor(2,1);
     Controller1.Screen.print(getX());
     Controller1.Screen.setCursor(3,1);
