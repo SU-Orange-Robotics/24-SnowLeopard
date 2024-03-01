@@ -35,6 +35,8 @@ rotation odomCenter(PORT3, true);
 motor wingLeft(PORT8, gearSetting::ratio18_1, false);
 motor wingRight(PORT9, gearSetting::ratio18_1, true);
 
+motor ballKicker(PORT16, gearSetting::ratio18_1, true);
+
 optical colorSensor(PORT14);
 
 brain Brain;

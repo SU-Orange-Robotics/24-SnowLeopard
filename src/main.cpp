@@ -323,6 +323,14 @@ void usercontrol(void) {
     // 2 stick arcade
     drive.arcadeDrive(Controller1.Axis3.position(), Controller1.Axis1.position());
 
+    if (Controller1.ButtonRight.pressing()){
+      ballKicker.spin(directionType::fwd, 100, percentUnits::pct);
+    } else if (Controller1.ButtonLeft.pressing()){
+      ballKicker.spin(directionType::rev, 100, percentUnits::pct);
+    } else {
+      ballKicker.stop(brakeType::brake);
+    }
+
     //intake
     Controller1.ButtonL1.pressed([](){
       intakeSpin();

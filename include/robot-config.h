@@ -15,6 +15,7 @@ extern motor LeftMotorB;
 extern motor RightMotorA;
 extern motor RightMotorB;
 
+
 extern motor intake;
 
 extern motor wingL;
@@ -34,6 +35,8 @@ extern optical colorSensor;
 
 extern motor wingLeft;
 extern motor wingRight;
+
+extern motor ballKicker;
 
 extern brain Brain;
 extern controller Controller1;
