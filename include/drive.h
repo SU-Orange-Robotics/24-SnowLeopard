@@ -23,9 +23,9 @@ class Drive {
 
         bool activePID;
 
-        const double a_P = 50;  //50
+        const double a_P = 45;  //50
         const double a_I = 0;   //0
-        const double a_D = 0.3; //0.1
+        const double a_D = 0.5; //0.3
         vex::timer pid_timer;
 
         const double d_P = 1.0;
@@ -48,14 +48,13 @@ class Drive {
 
         void tankDrive(double left, double right);
 
-        void toggleInvertedDrive() {
-            invertDrive = invertDrive ? false : true;
-        }
+        void toggleInvertedDrive();
 
         void resetHeading();
 
         void stop();
 
+        bool getInvertedDrive();
 
         // make this private at some point, it is only public for debugging purposes on the controller display
         double getAngleToPoint(double x2, double y2);

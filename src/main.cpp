@@ -67,16 +67,19 @@ void autonomous(void) {
   // Insert autonomous user code here.
   // ..........................................................................
 
+  // head to head auto
   /*
   drive.driveForward(100);
-  wait(0.6, sec);
+  wait(300, msec);
   drive.stop();
-  wait(1, sec);
+  catapultArm();
+  drive.driveForward(-100);
+  wait(1200, msec);
+  drive.stop();
 
-  //drive.goToPointPID(0, 1000);
   */
-  //drive.turnAndDrivePID(0, 1000);
   
+  // turning testing auto
   /*
   drive.turnPID(0);
 
@@ -90,46 +93,64 @@ void autonomous(void) {
 
   wait(1, sec);
 
-  drive.turnPID(5 * M_PI / 6);*/
+  drive.turnPID(5 * M_PI / 6);
+  */
+  
+  // auto skills code
 
+  drive.driveForward(100);
+  wait(300, msec);
+  drive.stop();
+  catapultArm();
+  drive.driveForward(-100);
+  wait(600, msec); //tune
+  drive.stop();
+  drive.turnPID(M_PI / -2);
+  drive.driveForward(100);
+  wait(1000, msec); //tune
+  drive.stop();
+
+  drive.turnPID(0 - 0.3);
 
   drive.driveForward(-100);
-  wait(650, msec);
+  wait(300, msec); //tune
   drive.stop();
 
-  //catapultArm();
-
-  drive.turnPID((-1 * M_PI / 4) + 0.0);
+  drive.turnPID((-1 * M_PI / 4) + 0.1);
   drive.driveForward(100);
-  wait(800, msec);
+  wait(1400, msec); // tune
   drive.stop();
 
-  intakeSpin();
+  intakeSpin(true);
+  wait(300, msec);
 
   int i;
-  for (i = 0; i < 6; i++) {
+  for (i = 0; i < 10; i++) {
     //reverse away from bar for match load
     drive.driveForward(-100);
-    wait(400, msec);
+    wait(400, msec); //tune
     drive.stop();
 
     catapultLaunch();
-    wait(500, msec);
+    waitUntil(getCatAccel() <= 0.05);
     catapultArm();
 
     // give time for match load to be loaded (in addition to catapult arm time) and allow for 
-    drive.turnPID((-1 * M_PI / 4) + 0.0);
-    wait(500, msec);
+    drive.turnPID((-1 * M_PI / 4) + 0.03);
+    //wait(500, msec);
 
     //drive forward into bar
     drive.driveForward(100);
-    wait(480, msec);
+    wait(650, msec); //tune
     drive.stop();
 
     //give time for ball to get into catapult
-    wait(300, msec);
+    wait(600, msec); // tune      or replace with color sensor
   }
   catapultLaunch();
+  intakeStop();
+
+
 
 }
 
@@ -188,10 +209,15 @@ void usercontrol(void) {
       wings.toggleWings();
     });
 
+    Controller1.ButtonX.pressed([](){
+      drive.toggleInvertedDrive();
+    });
+
     // catapult
     Controller1.ButtonR1.pressed([](){
       catapultLaunch();
-      // these two lines here are what does the automatic arming of the catapult.
+      // these three lines here are what does the automatic arming of the catapult.
+      wait(50, msec);
       waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
       catapultArm();
     });
@@ -228,11 +254,6 @@ void usercontrol(void) {
       catapultStop();
     });
 
-    //the button formerly known as twitter
-    Controller1.ButtonX.pressed([](){
-      drive.toggleInvertedDrive();
-    });
-
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
@@ -261,14 +282,16 @@ int main() {
     Controller1.Screen.setCursor(1,1);
     Controller1.Screen.print(gpsHeadingRad());
     Controller1.Screen.setCursor(1,10);
-    Controller1.Screen.print(gpsAngleRad());
+    Controller1.Screen.print(Brain.Battery.capacity()); //gpsAngleRad()
     Controller1.Screen.setCursor(2,1);
     Controller1.Screen.print(getX());
     Controller1.Screen.setCursor(3,1);
     Controller1.Screen.print(getY());
     Controller1.Screen.setCursor(2,12);
     //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
-    Controller1.Screen.print(catapultRot.angle());
+    Controller1.Screen.print(catapultRot.angle(rotationUnits::deg));
+    Controller1.Screen.setCursor(3, 12);
+    Controller1.Screen.print(drive.getInvertedDrive());
 
     wait(20, msec);
   }

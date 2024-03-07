@@ -21,6 +21,8 @@ this makes it easy to know when to reset the "global" tracked position based on 
 double xPos;
 double yPos;
 double theta;
+double gps_theta;
+double imu_theta;
 
 double odom_xPos;
 double odom_yPos;
@@ -36,6 +38,8 @@ void odomInit() {
     odom_xPos = gps1.xPosition(vex::distanceUnits::in);
     odom_yPos = gps1.yPosition(vex::distanceUnits::in);
     odom_theta = toRadians(gps1.heading(vex::rotationUnits::deg));
+    gps_theta = toRadians(gps1.rotation(rotationUnits::deg));
+    imu_theta = toRadians(IMU.rotation(rotationUnits::deg));
 
     odomLeft.resetPosition();
     odomRight.resetPosition();
@@ -74,6 +78,8 @@ void odomUpdate() {
 
     odom_theta += dt;
 
+
+
     //this is where we use the odometry to check if the gps' reported change in position is realistic
 
     double gpsdx = gps1.xPosition(distanceUnits::in) - xPos;
@@ -93,11 +99,19 @@ void odomUpdate() {
         yPos = gps1.yPosition(distanceUnits::in);
     }
 
-    //always update the angle
-    theta = toRadians(gps1.heading(rotationUnits::deg));
+    //update the angle with gps unless it is not reporting change, then use imu;
+    double imuChange = toRadians(IMU.rotation(rotationUnits::deg)) - imu_theta;
+    double gpsChange = toRadians(gps1.rotation(rotationUnits::deg)) - gps_theta;
 
+    //if (gps1.quality() <= 5) {
+    //    theta += imuChange;
+    //} else {
+        theta = toRadians(gps1.heading(rotationUnits::deg));
+    //}
 
-    // if the angle difference is big, leave the position as is (or change is based on odometry?)
+    imu_theta = toRadians(IMU.rotation(rotationUnits::deg));
+    gps_theta = toRadians(gps1.rotation(rotationUnits::deg));
+
 }
 
 double gpsHeadingRad() {
@@ -119,5 +133,6 @@ double getY() {
 }
 
 double getTheta() {
-    return theta;
+    double thetaRad = (-1 * theta);
+    return thetaRad += (theta < -1 * M_PI ? 2 * M_PI : 0);
 }
