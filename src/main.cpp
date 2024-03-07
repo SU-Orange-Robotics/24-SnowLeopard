@@ -14,6 +14,8 @@
 #include "wings.h"
 #include "odometry.h"
 
+#include <chrono>
+
 using namespace vex;
 
 /*---------------------------------------------------------------------------*/
@@ -31,25 +33,46 @@ void pre_auton(void) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 
-  wings.initWings();
+  // wings.initWings();
 
-  LeftMotorA.setStopping(brakeType::brake);
-  LeftMotorB.setStopping(brakeType::brake);
-  RightMotorA.setStopping(brakeType::brake);
-  RightMotorB.setStopping(brakeType::brake);
+  // LeftMotorA.setStopping(brakeType::brake);
+  // LeftMotorB.setStopping(brakeType::brake);
+  // RightMotorA.setStopping(brakeType::brake);
+  // RightMotorB.setStopping(brakeType::brake);
   
-  double maxCurrent = 2.5; //hardware maximum current is 2.5A
+  // double maxCurrent = 2.5; //hardware maximum current is 2.5A
 
-  LeftMotorA.setMaxTorque(maxCurrent, currentUnits::amp);
-  LeftMotorB.setMaxTorque(maxCurrent, currentUnits::amp);
-  RightMotorA.setMaxTorque(maxCurrent, currentUnits::amp);
-  RightMotorB.setMaxTorque(maxCurrent, currentUnits::amp);
+  // LeftMotorA.setMaxTorque(maxCurrent, currentUnits::amp);
+  // LeftMotorB.setMaxTorque(maxCurrent, currentUnits::amp);
+  // RightMotorA.setMaxTorque(maxCurrent, currentUnits::amp);
+  // RightMotorB.setMaxTorque(maxCurrent, currentUnits::amp);
 
 
-  catapultA.setStopping(brakeType::hold);
-  catapultB.setStopping(brakeType::hold);
+  // catapultA.setStopping(brakeType::hold);
+  // catapultB.setStopping(brakeType::hold);
 
-  intake.setStopping(brakeType::brake);
+  // intake.setStopping(brakeType::brake);
+
+  // bool DCFlag = false;
+  // bool AUFlag = false;
+
+  // Controller1.Screen.clearScreen();
+  // for (int i = 0; i < 600; i++) {
+  //   Controller1.Screen.setCursor(1,1);
+  //   Controller1.Screen.print("counter is: %d", i);
+  //   if (Competition.isAutonomous() && !AUFlag) {
+  //     AUFlag = true;
+  //     Controller1.Screen.setCursor(2,1);
+  //     Controller1.Screen.print("\nAuto ON, i is: %d \n", i);
+  //   }
+  //   if (Competition.isDriverControl() && !DCFlag) {
+  //     DCFlag = true;
+  //     Controller1.Screen.setCursor(3,1);
+  //     Controller1.Screen.print("\nDC ON, i is: %d \n", i);
+  //   }
+
+  //   this_thread::sleep_for(100);
+  // }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -97,6 +120,7 @@ void autonomous(void) {
   */
   
   // auto skills code
+  return;
 
   drive.driveForward(100);
   wait(300, msec);
@@ -164,17 +188,63 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+double updateSpeed(double previous_speed, double acceleration, double dt){
+
+  return previous_speed + acceleration *dt;
+}
+double updateDisplacement(double previous_displacement, double speed, double dt){
+  return previous_displacement + speed *dt;
+}
+
 void usercontrol(void) {
   // User control code here, inside the loop
 
   // use this if we have calibration issues. make sure it prevents driver control for at least 2 seconds
-  //IMU.calibrate(2000);
+  IMU.calibrate();
+  while (IMU.isCalibrating()) {
+    continue;
+    this_thread::sleep_for(100);
+  }
+
+  double speed = 0;
+  double displacement = 0;
+  double dt = 0.01;
+
+  auto previousTime = std::chrono::high_resolution_clock::now();
+  auto nextTime = previousTime;
+  std::chrono::duration<double> elapsed;
+  Controller1.Screen.clearScreen();
+
+  double currentAcc;
+
+
+
+
 
   while (1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
     // values based on feedback from the joysticks.
+    // measure once
+    nextTime = std::chrono::high_resolution_clock::now();
 
+    elapsed = nextTime - previousTime;
+    dt = elapsed.count(); 
+    currentAcc = (IMU.acceleration(axisType::yaxis)) * 9.8;
+    speed = updateSpeed(speed, currentAcc, dt);
+
+    displacement = updateDisplacement(displacement, speed, dt);
+
+    Controller1.Screen.setCursor(1,1);
+    Controller1.Screen.print("Current Speed: %f", speed);
+    Controller1.Screen.setCursor(2,1);
+    Controller1.Screen.print("Current Acc: %f", currentAcc);
+    
+    Controller1.Screen.setCursor(3,1);
+    Controller1.Screen.print("Current Speed: %f", displacement);
+
+    // mesaure once
+    previousTime = std::chrono::high_resolution_clock::now();
     // ........................................................................
     // Insert user code here. This is where you use the joystick values to
     // update your motors, etc.
@@ -254,8 +324,10 @@ void usercontrol(void) {
       catapultStop();
     });
 
+    // measure time
 
-    wait(20, msec); // Sleep the task for a short amount of time to
+
+    wait(10, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
   }
 }
@@ -274,25 +346,26 @@ int main() {
   pre_auton();
 
   // Prevent main from exiting with an infinite loop.
+
   while (true) {
     updateCatAccel(0.02);
-    odomUpdate();
+    // odomUpdate();
 
     //Controller1.Screen.clearScreen();
-    Controller1.Screen.setCursor(1,1);
-    Controller1.Screen.print(gpsHeadingRad());
-    Controller1.Screen.setCursor(1,10);
-    Controller1.Screen.print(Brain.Battery.capacity()); //gpsAngleRad()
-    Controller1.Screen.setCursor(2,1);
-    Controller1.Screen.print(getX());
-    Controller1.Screen.setCursor(3,1);
-    Controller1.Screen.print(getY());
-    Controller1.Screen.setCursor(2,12);
-    //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
-    Controller1.Screen.print(catapultRot.angle(rotationUnits::deg));
-    Controller1.Screen.setCursor(3, 12);
-    Controller1.Screen.print(drive.getInvertedDrive());
+    // Controller1.Screen.setCursor(1,1);
+    // Controller1.Screen.print(gpsHeadingRad());
+    // Controller1.Screen.setCursor(1,10);
+    // Controller1.Screen.print(Brain.Battery.capacity()); //gpsAngleRad()
+    // Controller1.Screen.setCursor(2,1);
+    // Controller1.Screen.print(getX());
+    // Controller1.Screen.setCursor(3,1);
+    // Controller1.Screen.print(getY());
+    // Controller1.Screen.setCursor(2,12);
+    // //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
+    // Controller1.Screen.print(catapultRot.angle(rotationUnits::deg));
+    // Controller1.Screen.setCursor(3, 12);
+    // Controller1.Screen.print(drive.getInvertedDrive());
 
-    wait(20, msec);
+    this_thread::sleep_for(1000);
   }
 }
