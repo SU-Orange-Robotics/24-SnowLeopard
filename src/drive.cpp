@@ -71,7 +71,7 @@ bool Drive::getInvertedDrive() {
 }
 
 void Drive::resetHeading() {
-    originHeading = IMU.heading();
+    originHeading = imu.heading();
 }
 
 void Drive::stop() {

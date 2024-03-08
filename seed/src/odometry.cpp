@@ -1,7 +1,6 @@
 #include "odometry.h"
 
-// Odometry-> take current heading, target heading, and decide which way to turn.
-
+// ============== EXPERIMENTAL STUFF ==============
 Odometry::Odometry(inertial* inertialSensor, gps* gpsSensor, mode newMode = defaultMode) 
   : imu(inertialSensor), gpsSensor(gpsSensor), odomMode(newMode)
 {

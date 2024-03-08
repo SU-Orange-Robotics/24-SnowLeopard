@@ -168,7 +168,7 @@ void usercontrol(void) {
   // User control code here, inside the loop
 
   // use this if we have calibration issues. make sure it prevents driver control for at least 2 seconds
-  //IMU.calibrate(2000);
+  //imu.calibrate(2000);
 
   while (1) {
     // This is the main execution loop for the user control program.

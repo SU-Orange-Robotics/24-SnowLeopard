@@ -8,8 +8,8 @@ using namespace vex;
 
 /*
 use this to detect when bot is going over the bar
-IMU.gyroRate(axisType::xaxis, velocityUnits::dps);
-IMU.gyroRate(axisType::yaxis, velocityUnits::dps);
+imu.gyroRate(axisType::xaxis, velocityUnits::dps);
+imu.gyroRate(axisType::yaxis, velocityUnits::dps);
 
 will likely set up some sort of state machine to know when the bot transitions from on the bar to back on the ground
 this makes it easy to know when to reset the "global" tracked position based on the gps and re-enable tracking wheels
@@ -39,7 +39,7 @@ void odomInit() {
     odom_yPos = gps1.yPosition(vex::distanceUnits::in);
     odom_theta = toRadians(gps1.heading(vex::rotationUnits::deg));
     gps_theta = toRadians(gps1.rotation(rotationUnits::deg));
-    imu_theta = toRadians(IMU.rotation(rotationUnits::deg));
+    imu_theta = toRadians(imu.rotation(rotationUnits::deg));
 
     odomLeft.resetPosition();
     odomRight.resetPosition();
@@ -100,7 +100,7 @@ void odomUpdate() {
     }
 
     //update the angle with gps unless it is not reporting change, then use imu;
-    double imuChange = toRadians(IMU.rotation(rotationUnits::deg)) - imu_theta;
+    double imuChange = toRadians(imu.rotation(rotationUnits::deg)) - imu_theta;
     double gpsChange = toRadians(gps1.rotation(rotationUnits::deg)) - gps_theta;
 
     //if (gps1.quality() <= 5) {
@@ -109,7 +109,7 @@ void odomUpdate() {
         theta = toRadians(gps1.heading(rotationUnits::deg));
     //}
 
-    imu_theta = toRadians(IMU.rotation(rotationUnits::deg));
+    imu_theta = toRadians(imu.rotation(rotationUnits::deg));
     gps_theta = toRadians(gps1.rotation(rotationUnits::deg));
 
 }

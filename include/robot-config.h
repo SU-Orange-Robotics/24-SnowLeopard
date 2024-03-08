@@ -24,7 +24,7 @@ extern motor catapultA;
 extern motor catapultB;
 extern rotation catapultRot;
 
-extern inertial IMU;
+extern inertial imu;
 extern gps gps1;
 extern rotation odomLeft;
 extern rotation odomRight;
