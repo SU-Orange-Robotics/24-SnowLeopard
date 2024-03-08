@@ -3,6 +3,7 @@
 #include "vex.h"
 
 // Odometry class
+// ============== EXPERIMENTAL STUFF ==============
 // Potentially fusing multiple sensor units to give more accurate odometry
 
 // define three modes in enum, inertial only, gps only, and inertial + gps

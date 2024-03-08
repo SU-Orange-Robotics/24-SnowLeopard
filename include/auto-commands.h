@@ -37,7 +37,7 @@ double flipAngle(double angle) {
 // |
 // | 
 // |-----------> 0 deg
-void greenTurnToTarget(Drive& drive, double pow, double target, bool holdPosition = false) {
+void turnToTargetIMUOnly(Drive& drive, double pow, double target, bool holdPosition = false) {
   target = flipAngle(target);
   std::tuple<bool, double> turnDir;
 
