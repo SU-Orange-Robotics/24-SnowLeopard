@@ -13,7 +13,7 @@
 #include "intakeCat.h"
 #include "wings.h"
 #include "odometry.h"
-
+#include "autonomous.h"
 using namespace vex;
 
 /*---------------------------------------------------------------------------*/
@@ -97,58 +97,58 @@ void autonomous(void) {
   */
   
   // auto skills code
+  green_skills_auto();
+  // drive.driveForward(100);
+  // wait(300, msec);
+  // drive.stop();
+  // catapultArm();
+  // drive.driveForward(-100);
+  // wait(600, msec); //tune
+  // drive.stop();
+  // drive.turnPID(M_PI / -2);
+  // drive.driveForward(100);
+  // wait(1000, msec); //tune
+  // drive.stop();
 
-  drive.driveForward(100);
-  wait(300, msec);
-  drive.stop();
-  catapultArm();
-  drive.driveForward(-100);
-  wait(600, msec); //tune
-  drive.stop();
-  drive.turnPID(M_PI / -2);
-  drive.driveForward(100);
-  wait(1000, msec); //tune
-  drive.stop();
+  // drive.turnPID(0 - 0.3);
 
-  drive.turnPID(0 - 0.3);
+  // drive.driveForward(-100);
+  // wait(300, msec); //tune
+  // drive.stop();
 
-  drive.driveForward(-100);
-  wait(300, msec); //tune
-  drive.stop();
+  // drive.turnPID((-1 * M_PI / 4) + 0.1);
+  // drive.driveForward(100);
+  // wait(1400, msec); // tune
+  // drive.stop();
 
-  drive.turnPID((-1 * M_PI / 4) + 0.1);
-  drive.driveForward(100);
-  wait(1400, msec); // tune
-  drive.stop();
+  // intakeSpin(true);
+  // wait(300, msec);
 
-  intakeSpin(true);
-  wait(300, msec);
+  // int i;
+  // for (i = 0; i < 10; i++) {
+  //   //reverse away from bar for match load
+  //   drive.driveForward(-100);
+  //   wait(400, msec); //tune
+  //   drive.stop();
 
-  int i;
-  for (i = 0; i < 10; i++) {
-    //reverse away from bar for match load
-    drive.driveForward(-100);
-    wait(400, msec); //tune
-    drive.stop();
+  //   catapultLaunch();
+  //   waitUntil(getCatAccel() <= 0.05);
+  //   catapultArm();
 
-    catapultLaunch();
-    waitUntil(getCatAccel() <= 0.05);
-    catapultArm();
+  //   // give time for match load to be loaded (in addition to catapult arm time) and allow for 
+  //   drive.turnPID((-1 * M_PI / 4) + 0.03);
+  //   //wait(500, msec);
 
-    // give time for match load to be loaded (in addition to catapult arm time) and allow for 
-    drive.turnPID((-1 * M_PI / 4) + 0.03);
-    //wait(500, msec);
+  //   //drive forward into bar
+  //   drive.driveForward(100);
+  //   wait(650, msec); //tune
+  //   drive.stop();
 
-    //drive forward into bar
-    drive.driveForward(100);
-    wait(650, msec); //tune
-    drive.stop();
-
-    //give time for ball to get into catapult
-    wait(600, msec); // tune      or replace with color sensor
-  }
-  catapultLaunch();
-  intakeStop();
+  //   //give time for ball to get into catapult
+  //   wait(600, msec); // tune      or replace with color sensor
+  // }
+  // catapultLaunch();
+  // intakeStop();
 
 
 
@@ -269,7 +269,7 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-
+  
   // Run the pre-autonomous function.
   pre_auton();
 

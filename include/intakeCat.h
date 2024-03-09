@@ -3,7 +3,7 @@
 #pragma once
 
 const double intakePow = 100;
-const double catPow = 35;
+const double catPow = 80;
 
 void stopAutoArming();
 
