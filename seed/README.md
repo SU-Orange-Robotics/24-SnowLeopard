@@ -3,6 +3,8 @@ This is an experimental repository to
 1. host shared code such as util functions or Odometry across the two bots' code bases
 2. use as a potential template creation repository in the future, for easier creation of a new project, without manually copying lots of scripts, as the projects get bigger
 
+Inspired by [RIT Core](https://github.com/RIT-VEX-U/Core)
+
 ## How to use OrangeSeed (Unix)
 
 1. If you currently don't have a copy of the OrangeSeed repository, you can clone it by running the following command in your V5 project root folder terminal:
@@ -17,3 +19,6 @@ chmod +x seed/scripts/*.sh
 ```bash
 ./seed/scripts/pull-from-seed.sh
 ```
+
+NOTE:
+Before pulling, run `./seed/scripts/check-before-pull.sh` to ensure there is something to pull. Otherwise git subtree pull will force creating empty commit histories.
