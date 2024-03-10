@@ -268,7 +268,7 @@ void autonomous_skills_auto() {
 
   driveForwardTimed(40, 0.7);
  
-  intake_and_shoot(7);
+  intake_and_shoot(9);
   //}
   go_over();
 }
