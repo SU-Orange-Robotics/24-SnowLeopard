@@ -60,7 +60,6 @@ class Drive {
         double getAngleToPoint(double x2, double y2);
 
 
-
         void driveForward(double fwd);
 
         void adjustCCW(double speed);
@@ -72,6 +71,9 @@ class Drive {
         void turnToPoint(double targetX, double targetY, bool flipped = false);
 
         void turnAndDrivePID(double targetX, double targetY);
+
+        void leftDrive(double pow);
+        void rightDrive(double pow);
 
         bool pidActive() {
             return activePID;

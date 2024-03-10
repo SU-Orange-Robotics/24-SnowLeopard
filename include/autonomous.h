@@ -5,7 +5,7 @@
 void autonomous_competition(void);
 
 // ========== retired autonomous routines ==========
-void green_skills_auto(void);
+void autonomous_skills_auto(void);
 
 void green_autonomous(void);
 

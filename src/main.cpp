@@ -97,7 +97,8 @@ void autonomous(void) {
   */
   
   // auto skills code
-  green_skills_auto();
+  autonomous_skills_auto();
+  
   // drive.driveForward(100);
   // wait(300, msec);
   // drive.stop();
@@ -272,7 +273,7 @@ int main() {
   
   // Run the pre-autonomous function.
   pre_auton();
-
+  Controller1.Screen.clearScreen();
   // Prevent main from exiting with an infinite loop.
   while (true) {
     updateCatAccel(0.02);
@@ -280,18 +281,19 @@ int main() {
 
     //Controller1.Screen.clearScreen();
     Controller1.Screen.setCursor(1,1);
-    Controller1.Screen.print(gpsHeadingRad());
-    Controller1.Screen.setCursor(1,10);
-    Controller1.Screen.print(Brain.Battery.capacity()); //gpsAngleRad()
-    Controller1.Screen.setCursor(2,1);
-    Controller1.Screen.print(getX());
-    Controller1.Screen.setCursor(3,1);
-    Controller1.Screen.print(getY());
-    Controller1.Screen.setCursor(2,12);
-    //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
-    Controller1.Screen.print(catapultRot.angle(rotationUnits::deg));
-    Controller1.Screen.setCursor(3, 12);
-    Controller1.Screen.print(drive.getInvertedDrive());
+    Controller1.Screen.print("yPosition: %f", gps1.yPosition());
+    // Controller1.Screen.print(gpsHeadingRad());
+    // Controller1.Screen.setCursor(1,10);
+    // Controller1.Screen.print(Brain.Battery.capacity()); //gpsAngleRad()
+    // Controller1.Screen.setCursor(2,1);
+    // Controller1.Screen.print(getX());
+    // Controller1.Screen.setCursor(3,1);
+    // Controller1.Screen.print(getY());
+    // Controller1.Screen.setCursor(2,12);
+    // //Controller1.Screen.print(drive.getAngleToPoint(0, 1000));
+    // Controller1.Screen.print(catapultRot.angle(rotationUnits::deg));
+    // Controller1.Screen.setCursor(3, 12);
+    // Controller1.Screen.print(drive.getInvertedDrive());
 
     wait(20, msec);
   }

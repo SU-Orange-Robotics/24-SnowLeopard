@@ -13,12 +13,12 @@ Drive::Drive() {
     activePID = false;
 }
 
-void leftDrive(double pow) {
+void Drive::leftDrive(double pow) {
     LeftMotorA.spin(directionType::fwd, pow, velocityUnits::pct);
     LeftMotorB.spin(directionType::fwd, pow, velocityUnits::pct);
 }
 
-void rightDrive(double pow) {
+void Drive::rightDrive(double pow) {
     RightMotorA.spin(directionType::fwd, pow, velocityUnits::pct);
     RightMotorB.spin(directionType::fwd, pow, velocityUnits::pct);
 }

@@ -3,14 +3,18 @@
 #include "robot-config.h"
 #include "drive.h"
 #include "intakeCat.h"
-// #include "../seed/include/auto-commands.h"
+#include "../seed/include/auto-commands.h"
 #include <chrono>
+#include"wings.h"
+
 
 // declare helper functions
 void driveForwardTimed(double pow, double time);
 void greenTurnTimed(double pow, double time);
 void push_ball();
-void intake_and_shoot();
+void go_over();
+void intake_and_shoot(int loopCount);
+int count = 0;
 
 /* ------------------------------------------------ */
 /* ------ Actual Competition Auton goes here ------ */
@@ -133,7 +137,7 @@ void driveForwardTimed(double pow, double time) {
 
 void push_ball() {
   int i;
-  for (i = 0; i < 2; i++) {
+  for (i = 0; i < 1; i++) {
     drive.driveForward(-80);
     wait(0.7, sec);
     drive.stop();
@@ -146,9 +150,50 @@ void push_ball() {
   }
 }
 
-void intake_and_shoot() {
 
-  for (int i = 0; i < 12; i++) {
+void go_over() {
+  //
+    intakeStop();
+
+    turnToTargetIMUOnly(drive, 40, 45);
+    driveForwardTimed(-80, 1.2);
+    drive.rightDrive(80);
+    drive.leftDrive(-80);
+    wait(1, sec);
+    drive.stop();
+    turnToTargetIMUOnly(drive, 40, 90);
+  
+    // driveForwardTimed(-100, 4);
+
+    double startPosition = gps1.yPosition();
+    if (startPosition > 0) {
+      while (gps1.yPosition() > -500) {
+        drive.driveForward(-100);
+      }
+    } else {
+      while (gps1.yPosition() < 500) {
+        drive.driveForward(-100);
+      }
+    }
+    
+    drive.stop();
+    wait(0.2, sec);
+    turnToTargetIMUOnly(drive, 40, 0);
+    driveForwardTimed(-60, 0.8);
+  
+    turnToTargetIMUOnly(drive, 40, 90);
+    driveForwardTimed(50, 0.7);
+    
+    wings.toggleWings();
+    wait(1, sec);
+    driveForwardTimed(-100, 2);
+    wait(0.2, sec);
+    driveForwardTimed(80, 1);
+}
+
+void intake_and_shoot(int loopCount) {
+
+  for (int i = 0; i < loopCount; i++) {
     if (!catInPosArmed()) {
       catapultArm();
     }
@@ -157,9 +202,10 @@ void intake_and_shoot() {
     intakeSpin(true);
 
     // move forward
-    driveForwardTimed(60, 1.5);
+    
+    driveForwardTimed(80, .80);
 
-    wait(0.7, sec);
+    wait(0.8, sec);
 
     // check if ball in
     if (colorSensor.isNearObject()) {
@@ -167,18 +213,22 @@ void intake_and_shoot() {
       Controller1.Screen.setCursor(1,1);
       Controller1.Screen.print("SHOOTING");
       
-      driveForwardTimed(-70, 1.1);
+      driveForwardTimed(-100, 0.6);
 
       ///The forloop has been eliminated///
+      turnToTargetIMUOnly(drive, 40, 70);
       catapultLaunch();
         // these two lines here are what does the automatic arming of the catapult.
       waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
       catapultArm();
-      
+      // count++;
 
-      wait(0.2, sec);
+      wait(0.1, sec);
 
     } else {
+
+      driveForwardTimed(-50, 0.3);
+      driveForwardTimed(50, 0.7);
       Controller1.Screen.setCursor(1,1);
       Controller1.Screen.print("not shooting");
       Controller1.Screen.print(colorSensor.hue());
@@ -187,23 +237,21 @@ void intake_and_shoot() {
 
       continue;
     }
-
+   
     // drive back
-    driveForwardTimed(-30, 0.1);
+    turnToTargetIMUOnly(drive, 40, 45);
+    
     wait(0.2, sec);
   }
 }
 
 // ========== retired autonomous routines ==========
-void green_skills_auto() {
-  // catapultLower();
-  // wait(0.6, sec);
-  // catapultStop();
-
+void autonomous_skills_auto() {
+ 
 
 
   // push ball in, try three times
-  push_ball();
+  //push_ball();
 
   if (!catInPosArmed()) {
     catapultArm();
@@ -219,12 +267,10 @@ void green_skills_auto() {
   // greenTurnToTarget(50, 315);
 
   driveForwardTimed(40, 0.7);
-  //auto mid_time = std::chrono::system_clock::now();
-  //auto rest_time = mid_time- std::chrono::minutes(1);
-  //while(std::chrono::system_clock::now() < rest_time){
-  // intake and shoot
-  intake_and_shoot();
+ 
+  intake_and_shoot(7);
   //}
+  go_over();
 }
 
 void green_autonomous() {
@@ -237,78 +283,3 @@ void green_autonomous() {
   catapultStop();
 }
 
-void autonomous_old(void) {
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
-
-  // catap
-  /*
-  drive.driveForward(100);
-  wait(0.6, sec);
-  drive.stop();
-  wait(1, sec);
-
-  //drive.goToPointPID(0, 1000);
-  */
-  //drive.turnAndDrivePID(0, 1000);
-  
-  /*
-  drive.turnPID(0);
-
-  wait(1, sec);
-
-  drive.turnPID(M_PI);
-
-  wait(1, sec);
-
-  drive.turnPID(M_PI / 2);
-
-  wait(1, sec);
-
-  drive.turnPID(5 * M_PI / 6);*/
-
-
-  // drive.driveForward(-100);
-  // wait(650, msec);
-  // drive.stop();
-
-  // //catapultArm();
-
-  // drive.turnPID((-1 * M_PI / 4) + 0.0);
-  // drive.driveForward(100);
-  // wait(800, msec);
-  // drive.stop();
-
-  // intakeSpin();
-
-  // int i;
-  // for (i = 0; i < 6; i++) {
-  //   //reverse away from bar for match load
-  //   drive.driveForward(-100);
-  //   wait(400, msec);
-  //   drive.stop();
-
-  //   catapultLaunch();
-  //   wait(500, msec);
-  //   catapultArm();
-
-  //   // give time for match load to be loaded (in addition to catapult arm time) and allow for 
-  //   drive.turnPID((-1 * M_PI / 4) + 0.0);
-  //   wait(500, msec);
-
-  //   //drive forward into bar
-  //   drive.driveForward(100);
-  //   wait(480, msec);
-  //   drive.stop();
-
-  //   //give time for ball to get into catapult
-  //   wait(300, msec);
-  // }
-  // catapultLaunch();
-  
-  // drive.driveForward(100);
-
-  // green_autonomous();
-  green_skills_auto();
-}
