@@ -203,10 +203,10 @@ void intake_and_shoot(int loopCount) {
 
     // move forward
     
-    driveForwardTimed(80, .80);
+    driveForwardTimed(100, .60);
 
     wait(0.8, sec);
-
+    
     // check if ball in
     if (colorSensor.isNearObject()) {
       // shoot
@@ -217,18 +217,29 @@ void intake_and_shoot(int loopCount) {
 
       ///The forloop has been eliminated///
       turnToTargetIMUOnly(drive, 40, 70);
+
       catapultLaunch();
+      
+      thread t2([]() {
         // these two lines here are what does the automatic arming of the catapult.
-      waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
-      catapultArm();
-      // count++;
+        waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
+        catapultArm();
+      });
 
       wait(0.1, sec);
 
+      // turn back
+      thread t1([]() {
+        turnToTargetIMUOnly(drive, 40, 45);
+      });
+
+      t1.join();
+      t2.join();
     } else {
 
       driveForwardTimed(-50, 0.3);
-      driveForwardTimed(50, 0.7);
+      driveForwardTimed(50, 0.8);
+      wait(0.3, sec);
       Controller1.Screen.setCursor(1,1);
       Controller1.Screen.print("not shooting");
       Controller1.Screen.print(colorSensor.hue());
@@ -237,9 +248,6 @@ void intake_and_shoot(int loopCount) {
 
       continue;
     }
-   
-    // drive back
-    turnToTargetIMUOnly(drive, 40, 45);
     
     wait(0.2, sec);
   }
