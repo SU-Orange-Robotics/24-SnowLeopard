@@ -13,6 +13,7 @@ void driveForwardTimed(double pow, double time);
 void greenTurnTimed(double pow, double time);
 void push_ball();
 void go_over();
+void fourfive();
 void intake_and_shoot(int loopCount);
 int count = 0;
 
@@ -150,7 +151,42 @@ void push_ball() {
   }
 }
 
+void fourfive(){
+  // set initial heading
+  initialHeading = 90;
 
+  driveForwardTimed(-80, 1);
+  turnToTargetIMUOnly(drive, 80, 180);
+  //The bot has already turned around
+  // turn on intake
+  thread t3([](){
+                intakeSpin(true);
+                 if (colorSensor.isNearObject()){
+
+                  catapultLaunch();
+                  waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
+                  catapultArm();
+
+
+                 } 
+  
+  });
+  thread t4([](){driveForwardTimed(100, 1);});
+
+  t3.join();
+  t4.join();
+  intakeStop();
+  turnToTargetIMUOnly(drive, 80, 270);
+  driveForwardTimed(100, 1);
+  //place ball//
+  turnToTargetIMUOnly(drive, 80, 300);
+  driveForwardTimed(100, 1);
+  
+  wings.toggleWings();
+
+
+
+}
 void go_over() {
   //
     intakeStop();
@@ -233,8 +269,14 @@ void intake_and_shoot(int loopCount) {
         turnToTargetIMUOnly(drive, 40, 45);
       });
 
+      
+
       t1.join();
       t2.join();
+      
+
+
+      
     } else {
 
       driveForwardTimed(-50, 0.3);
@@ -279,6 +321,8 @@ void autonomous_skills_auto() {
   intake_and_shoot(8);
   //}
   go_over();
+
+  
 }
 
 void green_autonomous() {

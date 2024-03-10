@@ -40,6 +40,8 @@ optical colorSensor(PORT14);
 brain Brain;
 controller Controller1(controllerType::primary);
 
+double initialHeading = 0;//initial 
+
 // declare object-oriented stuff here (that should be globally accessible)
 Drive drive;
 Wings wings;
