@@ -185,8 +185,8 @@ void go_over() {
     driveForwardTimed(50, 0.7);
     
     wings.toggleWings();
-    wait(1, sec);
-    driveForwardTimed(-100, 2);
+    wait(0.8, sec);
+    driveForwardTimed(-100, 1);
     wait(0.2, sec);
     driveForwardTimed(80, 1);
 }
@@ -268,7 +268,7 @@ void autonomous_skills_auto() {
 
   driveForwardTimed(40, 0.7);
  
-  intake_and_shoot(9);
+  intake_and_shoot(8);
   //}
   go_over();
 }
