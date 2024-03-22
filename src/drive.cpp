@@ -121,7 +121,7 @@ double Drive::getAngleErrorOLD(double target) {
 }
 
 double Drive::getAngleError(double target) {
-    double currHeading = toRadians(-1 * gps1.heading());
+    double currHeading = toRadians(-1 * imu.heading());
     double error = target - currHeading; //ccw positive
 
     if (fabs(error) > M_PI) { //converts a (0 to 2pi) value to a (-pi to pi) value
